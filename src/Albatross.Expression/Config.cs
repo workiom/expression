@@ -17,7 +17,7 @@ namespace Albatross.Expression
 
         public static class NumericLiteral
         {
-            public static string Culture = "en-US";
+            public static string Culture { get; set; } = "en-US";
         }
     }
 }
