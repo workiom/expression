@@ -34,6 +34,9 @@ namespace Albatross.Expression.Functions.Text
         public override object EvalValue(Func<string, object> context)
         {
             object value = Operands.First().EvalValue(context);
+            if (ExpressionMode.IsValidationMode)
+                return value?.ToString();
+
             return ObjectToJsonFormat(value);
         }
 
