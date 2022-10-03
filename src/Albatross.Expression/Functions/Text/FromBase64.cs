@@ -2,9 +2,7 @@
 using Albatross.Expression.Documentation.Attributes;
 using Albatross.Expression.Tokens;
 using System;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Albatross.Expression.Functions.Text
 {
@@ -35,18 +33,15 @@ namespace Albatross.Expression.Functions.Text
         public override object EvalValue(Func<string, object> context)
         {
             object value = Operands.First().EvalValue(context);
-            return Base64ToObject(value?.ToString());
+            return Base64Decode(value?.ToString());
         }
 
-        private object Base64ToObject(string base64String)
+        private string Base64Decode(string base64EncodedData)
         {
-            byte[] bytes = Convert.FromBase64String(base64String);
-            using (MemoryStream ms = new MemoryStream(bytes, 0, bytes.Length))
-            {
-                ms.Write(bytes, 0, bytes.Length);
-                ms.Position = 0;
-                return new BinaryFormatter().Deserialize(ms);
-            }
+            var base64EncodedBytes = Convert.FromBase64String(base64EncodedData);
+            var value = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+
+            return value;
         }
     }
 }
