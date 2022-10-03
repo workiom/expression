@@ -3,12 +3,13 @@ using Albatross.Expression.Documentation.Attributes;
 using Albatross.Expression.Tokens;
 using System;
 using System.Linq;
+using System.Text;
 
 namespace Albatross.Expression.Functions.Text
 {
-    [FunctionDoc(Group.Text, "{token}(@object)",
+    [FunctionDoc(Group.Text, "{token}(@text)",
         @"
-### Transforms any object into base64 string.
+### Transforms any string into hex formatted string.
 #### Inputs:
 - text: Any
 
@@ -19,11 +20,11 @@ namespace Albatross.Expression.Functions.Text
 - [{token}](https://help.workiom.com/article/formula#{token})
         ",
         @"
-{token}(1)
+{token}(""Text"")
         "
     )]
     [ParserOperation]
-    public class ToBase64 : PrefixOperationToken
+    public class ToHex : PrefixOperationToken
     {
         public override string Name { get { return "ToBase64"; } }
         public override int MinOperandCount { get { return 1; } }
@@ -36,14 +37,18 @@ namespace Albatross.Expression.Functions.Text
             if (ExpressionMode.IsValidationMode)
                 return value?.ToString();
 
-            return Base64Encode(value?.ToString());
+            return StringToHex(value?.ToString());
         }
 
-        private string Base64Encode(string val)
+        private string StringToHex(string value)
         {
-            string encodedStr = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(val));
+            var stringBuilder = new StringBuilder();
+            foreach (char character in value)
+            {
+                stringBuilder.Append(Convert.ToString(character, 16).PadLeft(4, '0'));
+            }
 
-            return encodedStr;
+            return stringBuilder.ToString();            
         }
     }
 }
