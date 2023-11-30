@@ -1,11 +1,11 @@
-﻿using Albatross.Expression.Documentation;
-using Albatross.Expression.Documentation.Attributes;
+﻿using Albatross.Expression.Documentation.Attributes;
 using Albatross.Expression.Exceptions;
-using Albatross.Expression.Helpers;
 using Albatross.Expression.Tokens;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Group = Albatross.Expression.Documentation.Group;
 
 namespace Albatross.Expression.Operations
 {
@@ -40,12 +40,34 @@ namespace Albatross.Expression.Operations
             }
             if (value is string)
             {
-                return TextHelper.CountChars((string)value);
+                return CountChars((string)value);
             }
             else
             {
                 throw new UnexpectedTypeException(value.GetType());
             }
+        }
+        
+        public static double CountChars(string text)
+        {
+            // Strip of markdown syntax
+            var result = text.TryNormalizeText(out string normalizedText);
+
+            if (result)
+            {
+                text = normalizedText;
+            }
+            
+            // Define the pattern to match non-space characters
+            string pattern = @"\S";
+        
+            // Use Regex.Matches to find all matches
+            MatchCollection matches = Regex.Matches(text, pattern);
+        
+            // Count the number of matches
+            var charCount = (double)matches.Count;
+
+            return charCount;
         }
     }
 }

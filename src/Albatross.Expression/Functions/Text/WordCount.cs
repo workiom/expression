@@ -1,15 +1,15 @@
 ﻿using Albatross.Expression.Documentation.Attributes;
 using Albatross.Expression.Exceptions;
-using Albatross.Expression.Helpers;
 using Albatross.Expression.Tokens;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Group = Albatross.Expression.Documentation.Group;
 
 namespace Albatross.Expression.Operations
 {
-    [FunctionDoc(Documentation.Group.Text, "{token}( )",
+    [FunctionDoc(Group.Text, "{token}( )",
 @"### Returns the number of words in a string.
 #### Inputs:
 - string: String
@@ -36,7 +36,7 @@ namespace Albatross.Expression.Operations
             }
             else if (value is string)
             {
-                return TextHelper.CountWords((string)value);
+                return CountWords((string)value);
             }
             if (value is ICollection)
             {
@@ -46,6 +46,28 @@ namespace Albatross.Expression.Operations
             {
                 throw new UnexpectedTypeException(value.GetType());
             }
+        }
+        
+        public static double CountWords(string text)
+        {
+            // Strip of markdown syntax
+            var result = text.TryNormalizeText(out string normalizedText);
+
+            if (result)
+            {
+                text = normalizedText;
+            }
+            
+            // Define a regular expression pattern for matching words
+            string pattern = @"\b\w+\b";
+
+            // Use Regex.Matches to find all matches in the input text
+            MatchCollection matches = Regex.Matches(text, pattern);
+
+            // The Count property of MatchCollection gives the number of matches
+            var wordCount = (double)matches.Count;
+
+            return wordCount;
         }
     }
 }
