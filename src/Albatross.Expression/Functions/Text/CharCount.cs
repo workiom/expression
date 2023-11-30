@@ -48,7 +48,7 @@ namespace Albatross.Expression.Operations
             }
         }
         
-        public static double CountChars(string text)
+        private static double CountChars(string text)
         {
             // Strip of markdown syntax
             var result = text.TryNormalizeText(out string normalizedText);
