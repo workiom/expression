@@ -1,6 +1,7 @@
 ﻿using Albatross.Expression.Documentation;
 using Albatross.Expression.Documentation.Attributes;
 using Albatross.Expression.Exceptions;
+using Albatross.Expression.Helpers;
 using Albatross.Expression.Tokens;
 using System;
 using System.Collections;
@@ -39,7 +40,7 @@ namespace Albatross.Expression.Operations
             }
             if (value is string)
             {
-                return Convert.ToDouble(((string)value).Length);
+                return TextHelper.CountChars((string)value);
             }
             else
             {

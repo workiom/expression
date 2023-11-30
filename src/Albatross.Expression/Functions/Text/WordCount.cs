@@ -1,5 +1,6 @@
 ﻿using Albatross.Expression.Documentation.Attributes;
 using Albatross.Expression.Exceptions;
+using Albatross.Expression.Helpers;
 using Albatross.Expression.Tokens;
 using System;
 using System.Collections;
@@ -35,7 +36,7 @@ namespace Albatross.Expression.Operations
             }
             else if (value is string)
             {
-                return CountWords((string)value);
+                return TextHelper.CountWords((string)value);
             }
             if (value is ICollection)
             {
@@ -45,20 +46,6 @@ namespace Albatross.Expression.Operations
             {
                 throw new UnexpectedTypeException(value.GetType());
             }
-        }
-
-        private double CountWords(string text)
-        {
-            // Define a regular expression pattern for matching words
-            string pattern = @"\b\w+\b";
-
-            // Use Regex.Matches to find all matches in the input text
-            var matches = Regex.Matches(text, pattern);
-
-            // The Count property of MatchCollection gives the number of matches
-            var wordCount = (double)matches.Count;
-
-            return wordCount;
         }
     }
 }
