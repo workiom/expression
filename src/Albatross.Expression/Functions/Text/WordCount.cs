@@ -47,8 +47,8 @@ namespace Albatross.Expression.Operations
                 throw new UnexpectedTypeException(value.GetType());
             }
         }
-        
-        private static double CountWords(string text)
+
+        private double CountWords(string text)
         {
             // Strip of markdown syntax
             var result = text.TryNormalizeText(out string normalizedText);
@@ -57,7 +57,7 @@ namespace Albatross.Expression.Operations
             {
                 text = normalizedText;
             }
-            
+
             // Define a regular expression pattern for matching words
             string pattern = @"\b\w+\b";
 
