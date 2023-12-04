@@ -130,22 +130,49 @@ namespace Albatross.Expression
 
         public static bool TryNormalizeText(this string text, out string normalizedText)
         {
+            normalizedText = null;
+
             // Replace All \n to into \\n so it can be seen as a new line
             text = text.Replace("\\n", "\n");
 
-            // Regular expression pattern to check for basic Markdown elements
-            string markdownPattern = @"^(\s*#+\s+|\*|\d+\.\s+|\-|\+|\[\!\[.*\]\(.*\)\]\(.*\)|\[\w+.*\]:\s*http[s]?://\S+|```[\s\S]+?```|\|.*\|.*\|)|(!\[[^\]]*\]\([^\)]*\)|\[[^\]]*\]\([^\)]*\)|\*\*.*\*\*|__.*__|\*.*\*|_.*_|`[^`]*`|\[.*\]\(.*\)|<.*>)$";
-
-            Regex regex = new Regex(markdownPattern, RegexOptions.Multiline);
-
-            if (!regex.IsMatch(text))
-            {
-                normalizedText = null;
+            if (!IsMarkdown(text))
                 return false;
-            }
 
             // Convert it to Html and then to plain text
-            text = ConvertHtmlToPlainText(CommonMark.CommonMarkConverter.Convert(text));
+            var html = text.ConvertMarkdownToHtml();
+            var plainText = html.ConvertHtmlToPlainText();
+            normalizedText = plainText.Trim(); // Trim leading and trailing spaces
+
+            return normalizedText != null;
+        }
+
+        public static bool IsMarkdown(this string text)
+        {
+            // Regular expression pattern to check for basic Markdown elements
+            var markdownPattern = @"^(\s*#+\s+|\*|\d+\.\s+|\-|\+|\[\!\[.*\]\(.*\)\]\(.*\)|\[\w+.*\]:\s*http[s]?://\S+|```[\s\S]+?```|\|.*\|.*\|)|(!\[[^\]]*\]\([^\)]*\)|\[[^\]]*\]\([^\)]*\)|\*\*.*\*\*|__.*__|\*.*\*|_.*_|`[^`]*`|\[.*\]\(.*\)|<.*>)$";
+
+            var regex = new Regex(markdownPattern, RegexOptions.Multiline);
+
+            return regex.IsMatch(text);
+        }
+
+        public static string ConvertHtmlToPlainText(this string html)
+        {
+            var doc = new HtmlDocument();
+            doc.LoadHtml(html);
+
+            // Use HtmlAgilityPack to extract text from HTML
+            return doc.DocumentNode.InnerText;
+        }
+
+        public static string ConvertMarkdownToHtml(this string markdown)
+        {
+            return CommonMark.CommonMarkConverter.Convert(markdown);
+        }
+
+        public static string StripMarkdown(this string markdown)
+        {
+            var text = markdown;
 
             // Remove all markdown tags
             text = Regex.Replace(text, "\n=+", ""); // Headers    
@@ -163,28 +190,12 @@ namespace Albatross.Expression
             text = Regex.Replace(text, @"\|.*?\|(\n\|.*?\|)*", ""); // Remove table tags
 
             // Replace escape sequences with white space
-            text = Regex.Replace(text, @"\\[abfnrt\'\""\0]|\\x[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4}",
-                " ");
+            text = Regex.Replace(text, @"\\[abfnrt\'\""\0]|\\x[0-9a-fA-F]{2}|\\u[0-9a-fA-F]{4}", " ");
 
             // Add regex to remove escape sequences
             text = Regex.Replace(text, @"\\[nt\""']+", "");
 
-            normalizedText = text.Trim(); // Trim leading and trailing spaces
-
-            return true;
-        }
-
-        #endregion
-
-        #region Utilities
-
-        private static string ConvertHtmlToPlainText(string html)
-        {
-            var doc = new HtmlDocument();
-            doc.LoadHtml(html);
-
-            // Use HtmlAgilityPack to extract text from HTML
-            return doc.DocumentNode.InnerText;
+            return text;
         }
 
         #endregion
