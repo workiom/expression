@@ -149,6 +149,8 @@ namespace Albatross.Expression
         public static bool IsMarkdown(this string text)
         {
             // Regular expression pattern to check for basic Markdown elements
+            // Another pattern
+            // (#|##|###|####|#####|######|\*{1,3}|_{1,3}|\[.*?\]\(.*?\)|!\[.*?\]\(.*?\)|\d+\.\s)
             var markdownPattern = @"^(\s*#+\s+|\*|\d+\.\s+|\-|\+|\[\!\[.*\]\(.*\)\]\(.*\)|\[\w+.*\]:\s*http[s]?://\S+|```[\s\S]+?```|\|.*\|.*\|)|(!\[[^\]]*\]\([^\)]*\)|\[[^\]]*\]\([^\)]*\)|\*\*.*\*\*|__.*__|\*.*\*|_.*_|`[^`]*`|\[.*\]\(.*\)|<.*>)$";
 
             var regex = new Regex(markdownPattern, RegexOptions.Multiline);
