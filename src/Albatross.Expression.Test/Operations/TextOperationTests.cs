@@ -87,6 +87,7 @@ namespace Albatross.Expression.Test
         [TestCase("wordCount(\"**Bold **_Italic_ ~~StrikeThrough~~ **_~~BoldItalicStrikeThrough~~_****_ BoldItalic_** _~~ItalicStrikeThrough~~__ _**~~BoldStrikeThrough~~**\")", ExpectedResult = 7)]
         [TestCase("wordCount(\"> Block Quote\\n\\n`Code`\\n\\n    Code Block\\n\\nEmoji \\n\\n[Link](https://stackedit.io/app#)\")", ExpectedResult = 7)]
         [TestCase("wordCount(\"1. LevelOne\\n\\n2. LevelTwo\\n\\n\\n\\n* LevelOne\\n\\n* LevelTwo\")", ExpectedResult = 4)]
+        [TestCase("wordCount(\"1. **Bold**\\n\\n2. **_BoldItalic_**\\n\\n3. **_~~BoldItalicStrikeThrough~~_**\\n\\n4. [Link](http://asdasdasdad@dasfv/asdqw)\\n\\n5. Emoji 2 \ud83d\ude07 \ud83d\ude17\")", ExpectedResult = 6)]
         
         // Char Count   
         [TestCase("charCount(\"123\")", ExpectedResult = 3)]
@@ -102,7 +103,11 @@ namespace Albatross.Expression.Test
         [TestCase("charCount(\"**Bold **_Italic_ ~~StrikeThrough~~ **_~~BoldItalicStrikeThrough~~_****_ BoldItalic_** _~~ItalicStrikeThrough~~__ _**~~BoldStrikeThrough~~**\")", ExpectedResult = 96)]
         [TestCase("charCount(\"> Block Quote\\n\\n`Code`\\n\\n    Code Block\\n\\nEmoji \\n\\n[Link](https://stackedit.io/app#)\")", ExpectedResult = 32)]
         [TestCase("charCount(\"1. LevelOne\\n\\n2. LevelTwo\\n\\n\\n\\n* LevelOne\\n\\n* LevelTwo\")", ExpectedResult = 32)]
-
+        [TestCase("charCount(\"1. **Bold**\\n\\n2. **_BoldItalic_**\\n\\n3. **_~~BoldItalicStrikeThrough~~_**\\n\\n4. [Link](http://asdasdasdad@dasfv/asdqw)\\n\\n5. Emoji 2 \ud83d\ude07 \ud83d\ude17\")", ExpectedResult = 47)]
+        [TestCase("charCount(\"[IRFAN](https://testqa.workiom.club/app/apps/b226f5a6-7a1a-41be-ac89-546bd3084bf5/list/1f815325-d905-49e5-8976-c26dafff4f89/394417) IRFAN\")", ExpectedResult = 10)]
+        [TestCase("charCount(\"IRFAN 💫\")", ExpectedResult = 5)]
+        [TestCase("charCount(\"IRFAN\\n=====\")", ExpectedResult = 5)]
+        [TestCase("charCount(\"> IRFAN\")", ExpectedResult = 5)]
         public object OperationsTesting(string expression)
         {
             return Factory.Instance.Create().Compile(expression).EvalValue(null);
