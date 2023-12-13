@@ -50,6 +50,8 @@ namespace Albatross.Expression.Operations
 
         private double CountChars(string text)
         {
+            text = text.Trim();
+            
             // Strip of markdown syntax
             var result = text.TryNormalizeText(out string normalizedText);
 
