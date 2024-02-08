@@ -23,7 +23,7 @@ namespace Albatross.Expression.Test
 
         // Random
         [TestCase("getRandom() > 0", ExpectedResult = true)]
-        [TestCase("getRandom(10) > 0 and getRandom(10, 100) < 100", ExpectedResult = true)]
+        [TestCase("getRandom(0, 10) > 0 and getRandom(10, 101) < 100", ExpectedResult = true)]
         [TestCase("getRandom(10, 100) > 10 and getRandom(10, 100) < 100", ExpectedResult = true)]
         [TestCase("getRandom(10, 100) < 10 or getRandom(10, 100) > 100", ExpectedResult = false)]
 
