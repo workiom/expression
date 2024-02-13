@@ -48,9 +48,10 @@ namespace Albatross.Expression.Operations
             }
         }
 
-        private double CountChars(string text)
+        private static double CountChars(string text)
         {
-            // Strip of markdown syntax
+            text = text.Trim();
+        
             var result = text.TryNormalizeText(out string normalizedText);
 
             if (result)
@@ -58,13 +59,9 @@ namespace Albatross.Expression.Operations
                 text = normalizedText;
             }
 
-            // Define the pattern to match non-space characters
             string pattern = @"\S";
-
-            // Use Regex.Matches to find all matches
             MatchCollection matches = Regex.Matches(text, pattern);
 
-            // Count the number of matches
             var charCount = (double)matches.Count;
 
             return charCount;

@@ -48,9 +48,10 @@ namespace Albatross.Expression.Operations
             }
         }
 
-        private double CountWords(string text)
+        private static double CountWords(string text)
         {
-            // Strip of markdown syntax
+            text = text.Trim();
+        
             var result = text.TryNormalizeText(out string normalizedText);
 
             if (result)
@@ -58,13 +59,9 @@ namespace Albatross.Expression.Operations
                 text = normalizedText;
             }
 
-            // Define a regular expression pattern for matching words
             string pattern = @"\b\w+\b";
-
-            // Use Regex.Matches to find all matches in the input text
             MatchCollection matches = Regex.Matches(text, pattern);
 
-            // The Count property of MatchCollection gives the number of matches
             var wordCount = (double)matches.Count;
 
             return wordCount;
