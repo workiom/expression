@@ -27,6 +27,18 @@ namespace Albatross.Expression.Test
         [TestCase("getRandom(10, 100) > 10 and getRandom(10, 100) < 100", ExpectedResult = true)]
         [TestCase("getRandom(10, 100) < 10 or getRandom(10, 100) > 100", ExpectedResult = false)]
 
+        // IsBetween
+        [TestCase("IsBetween(5, 1, 10)", ExpectedResult = true)]
+        [TestCase("IsBetween(10, 1, 10)", ExpectedResult = true)]
+        [TestCase("IsBetween(1, 1, 10)", ExpectedResult = true)]
+        [TestCase("IsBetween(0, 1, 10)", ExpectedResult = false)]
+        [TestCase("IsBetween(11, 1, 10)", ExpectedResult = false)]
+        [TestCase("IsBetween(0, -10, 10)", ExpectedResult = true)]
+        [TestCase("IsBetween(-10, -10, 10)", ExpectedResult = true)]
+        [TestCase("IsBetween(10, -10, 10)", ExpectedResult = true)]
+        [TestCase("IsBetween(-11, -10, 10)", ExpectedResult = false)]
+        [TestCase("IsBetween(11, -10, 10)", ExpectedResult = false)]
+        
         // Round
         [TestCase("round(1.4)", ExpectedResult = 1)]
         [TestCase("round(1.431412, 2)", ExpectedResult = 1.43)]
