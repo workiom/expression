@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-		<AssemblyVersion>2.3.16.0</AssemblyVersion>
-		<FileVersion>2.3.16.0</FileVersion>
+		<AssemblyVersion>2.3.17.0</AssemblyVersion>
+		<FileVersion>2.3.17.0</FileVersion>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Version>2.3.16.0</Version>
+		<Version>2.3.17.0</Version>
 		<Authors>Workiom.Expression</Authors>
 		<PackageId>Workiom.Expression</PackageId>
 		<Product>Workiom.Expression</Product>
@@ -16,6 +16,7 @@
 	  </PackageReference>
 	</ItemGroup>
 	<ItemGroup>
+	  <PackageReference Include="ByteSize" Version="2.1.2" />
 	  <PackageReference Include="CommonMark.NET" Version="0.15.1" />
 	  <PackageReference Include="HtmlAgilityPack" Version="1.11.54" />
 	  <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
