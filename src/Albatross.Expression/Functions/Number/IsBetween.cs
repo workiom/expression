@@ -18,10 +18,10 @@ namespace Albatross.Expression.Functions.Number
     [ParserOperation]
     public class IsBetween : PrefixOperationToken
     {
-        public override string Name { get { return "IsBetween"; } }
-        public override int MinOperandCount { get { return 3; } }
-        public override int MaxOperandCount { get { return 3; } }
-        public override bool Symbolic { get { return false; } }
+        public override string Name => "IsBetween";
+        public override int MinOperandCount => 3;
+        public override int MaxOperandCount => 3;
+        public override bool Symbolic => false;
 
         public override object EvalValue(Func<string, object> context)
         {
@@ -35,7 +35,6 @@ namespace Albatross.Expression.Functions.Number
             var minValue = input[1];
             var maxValue = input[2];
 
-            return minValue <= numberToCheck && numberToCheck <= maxValue;
-        }
+            return numberToCheck  >= minValue && numberToCheck <= maxValue;        }
     }
 }
