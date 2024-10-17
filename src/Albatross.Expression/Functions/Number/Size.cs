@@ -37,10 +37,9 @@ namespace Albatross.Expression.Functions.Number
         {
             var operand = Operands[0];
             object value = operand.EvalValue(context);
-
             try
             {
-                double bytes = Convert.ToDouble(operand);
+                double bytes = Convert.ToDouble(value);
                 var megaBytes = ByteSize.FromBytes(bytes).MegaBytes;
                 return megaBytes;
             }
