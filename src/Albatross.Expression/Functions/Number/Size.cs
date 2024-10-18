@@ -15,7 +15,7 @@ namespace Albatross.Expression.Functions.Number
     /// <para>Usage: Size(1048576)</para>
     /// <para>Note: If the input is null, the result will be null.</para>
     /// </summary>
-    [FunctionDoc(Documentation.Group.Number, "{token}(value)",
+    [FunctionDoc(Documentation.Group.Number, "{token}()",
         @"### Convert Bytes to Megabytes
 #### Inputs:
 - value: Number of bytes

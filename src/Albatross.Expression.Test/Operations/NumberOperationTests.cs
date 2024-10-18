@@ -22,14 +22,14 @@ namespace Albatross.Expression.Test
         [TestCase("avg(@(0, 4, 5))", ExpectedResult = 3)]
         
         // Size
-        [TestCase("Size(500000)", ExpectedResult = 0.5)]
-        [TestCase("Size(10000000)", ExpectedResult = 10)]
-        [TestCase("Size(50000000)", ExpectedResult = 50)]
-        [TestCase("Size(100000000)", ExpectedResult = 100)]
-        [TestCase("Size(500000000)", ExpectedResult = 500)]
-        [TestCase("Size(1000000000)", ExpectedResult = 1000)]
-        [TestCase("Size(5000000000)", ExpectedResult = 5000)]
-        [TestCase("Size(10000000000)", ExpectedResult = 10000)]
+        [TestCase("size(500000)", ExpectedResult = 0.5)]
+        [TestCase("size(10000000)", ExpectedResult = 10)]
+        [TestCase("size(50000000)", ExpectedResult = 50)]
+        [TestCase("size(100000000)", ExpectedResult = 100)]
+        [TestCase("size(500000000)", ExpectedResult = 500)]
+        [TestCase("size(1000000000)", ExpectedResult = 1000)]
+        [TestCase("size(5000000000)", ExpectedResult = 5000)]
+        [TestCase("size(10000000000)", ExpectedResult = 10000)]
         
         // Random
         [TestCase("getRandom() > 0", ExpectedResult = true)]
