@@ -175,6 +175,14 @@ namespace Albatross.Expression
         #endregion
 
         #region Utilities
+        
+        public static object GetOperandsAt(this List<object> operands, int index)
+        {
+            if (operands.Count >= index + 1)
+                return operands[index];
+
+            return null;
+        }
 
         private static string ConvertHtmlToPlainText(string html)
         {

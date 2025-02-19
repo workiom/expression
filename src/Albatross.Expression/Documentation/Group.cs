@@ -8,5 +8,6 @@
         Number,
         Boolean,
         Environment,
+        File,
     }    
 }
