@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Albatross.Expression.Test {
 	[TestFixture]
 	public class PrecedenceTest {
-		[TestCase("1+ 2/2", ExpectedResult = 2)]
+		[TestCase("1+ 2/22", ExpectedResult = 2)]
 		[TestCase("1+ 2*2", ExpectedResult = 5)]
 		[TestCase("(1+ 2)*2", ExpectedResult = 6)]
 		[TestCase("1* 6 * 3", ExpectedResult = 18)]
