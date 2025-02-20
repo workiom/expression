@@ -10,13 +10,13 @@ namespace Albatross.Expression.Functions.File
     [FunctionDoc(Group.File, "{token}( , )",
         @"### Returns a barcode in image format.
 #### Inputs:
-- input: String
-- width: Number
-- hight: Number
-- standard: String
+- input: String (mandatory)
+- standard: String (mandatory). Supported Standards: Codabar, Code11, Code128, Code128A, Code128B, Code128C, Code39, Code39E, Code93, EAN13, EAN8.
+- width: Number (optional), default is 160
+- hight: Number (optional), default is 80
 
 #### Outputs:
-- Image File"
+- File: The generated barcode image"
     )]
     [ParserOperation]
     public class CreateBarcode : PrefixOperationToken
@@ -28,7 +28,7 @@ namespace Albatross.Expression.Functions.File
 
         public override int MinOperandCount
         {
-            get { return 4; }
+            get { return 2; }
         }
 
         public override int MaxOperandCount
@@ -55,8 +55,8 @@ namespace Albatross.Expression.Functions.File
 
             var input = value1?.ToString();
             var type = BarcodeType.Code128;
-            int width = 0;
-            int hight = 0;
+            int width = 160;
+            int hight = 80;
 
             if (value2 != null && !Enum.TryParse(value2.ToString(), out type))
                 throw new UnexpectedTypeException(value2.GetType());
