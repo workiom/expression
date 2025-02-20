@@ -12,8 +12,8 @@ namespace Albatross.Expression.Functions.File
 #### Inputs:
 - input: String (mandatory)
 - standard: String (mandatory). Supported Standards: Codabar, Code11, Code128, Code128A, Code128B, Code128C, Code39, Code39E, Code93, EAN13, EAN8.
-- width: Number (optional), default is 160
-- hight: Number (optional), default is 80
+- width: Number (optional), default is auto size
+- hight: Number (optional), default is auto size
 
 #### Outputs:
 - File: The generated barcode image"
@@ -55,8 +55,8 @@ namespace Albatross.Expression.Functions.File
 
             var input = value1?.ToString();
             var type = BarcodeType.Code128;
-            int width = 160;
-            int hight = 80;
+            int width = 0;
+            int hight = 0;
 
             if (value2 != null && !Enum.TryParse(value2.ToString(), out type))
                 throw new UnexpectedTypeException(value2.GetType());
