@@ -13,8 +13,7 @@
             [TestCase("createBarcode(\"abc12313_123123!@#\",\"Code128\")", true)]
 
             [TestCase("createBarcode(\"test-12345\")", false)]
-            [TestCase("createBarcode(\"abc12313_123123!@#\")", false)]
-            [TestCase("createBarcode(\"\")", false)]
+            [TestCase("createBarcode(\"\",\"Code128\")", false)]
             [TestCase("createBarcode(\"test-12345\",\"XXX\")", false)]
             public void OperationsTesting(string expression, bool succeed)
             {

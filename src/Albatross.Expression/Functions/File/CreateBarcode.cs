@@ -67,6 +67,9 @@ namespace Albatross.Expression.Functions.File
             if (value4 != null && !int.TryParse(value4.ToString(), out hight))
                 throw new UnexpectedTypeException(value4.GetType());
 
+            if (string.IsNullOrEmpty(input))
+                return null;
+
             var barcode = new BarcodeGenerator()
                 .Generate(input, type, width, hight);
 
