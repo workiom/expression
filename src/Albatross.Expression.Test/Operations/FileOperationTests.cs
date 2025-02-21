@@ -11,6 +11,12 @@
             [TestCase("createBarcode(\"test-12345\",\"Code128\",200,100)", true)]
             [TestCase("createBarcode(\"abc12313_123123!@#\",\"Code128\",300,100)", true)]
             [TestCase("createBarcode(\"abc12313_123123!@#\",\"Code128\")", true)]
+            [TestCase("createBarcode(\"abc12313_123123!@#\",\"Code128\",\"\",200)", true)]
+            [TestCase("createBarcode(\"abc12313_123123!@#\",\"Code128\",400,\"\")", true)]
+            [TestCase("createBarcode(\"abc12313_123123!@#\",\"Code128\",0,0)", true)]
+            [TestCase("createBarcode(\"abc12313_123123!@#\",\"Code128\",\"\",0)", true)]
+            [TestCase("createBarcode(\"abc12313_123123!@#\",\"Code128\",0,\"\")", true)]
+            [TestCase("createBarcode(\"abc12313_123123!@#\",\"Code128\",-1,0)", true)]
 
             [TestCase("createBarcode(\"test-12345\")", false)]
             [TestCase("createBarcode(\"\",\"Code128\")", false)]

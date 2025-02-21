@@ -61,14 +61,23 @@ namespace Albatross.Expression.Functions.File
             if (value2 != null && !Enum.TryParse(value2.ToString(), out type))
                 throw new UnexpectedTypeException(value2.GetType());
 
-            if (value3 != null && !int.TryParse(value3.ToString(), out width))
+            if (value3 != null && !string.IsNullOrEmpty(value3.ToString()) && !int.TryParse(value3.ToString(), out width))
                 throw new UnexpectedTypeException(value3.GetType());
 
-            if (value4 != null && !int.TryParse(value4.ToString(), out hight))
+            if (value4 != null && !string.IsNullOrEmpty(value4.ToString()) && !int.TryParse(value4.ToString(), out hight))
                 throw new UnexpectedTypeException(value4.GetType());
 
             if (string.IsNullOrEmpty(input))
                 return null;
+
+            if (width <= 0 && hight > 0)
+            {
+                width = 400;
+            }
+            else if (hight <= 0 && width > 0)
+            {
+                hight = 200;
+            }
 
             var barcode = new BarcodeGenerator()
                 .Generate(input, type, width, hight);
