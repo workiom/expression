@@ -18,6 +18,7 @@
             [TestCase("createBarcode(\"abc12313_123123!@#\",\"Code128\",0,\"\")", true)]
             [TestCase("createBarcode(\"abc12313_123123!@#\",\"Code128\",-1,0)", true)]
             [TestCase("createBarcode(\"test-12345\",\"XXX\")", true)] // we take the default one
+            [TestCase("createBarcode(\"test-12345\",\"code128\")", true)] // we take the default one
 
             [TestCase("createBarcode(\"test-12345\")", false)]
             [TestCase("createBarcode(\"\",\"Code128\")", false)]

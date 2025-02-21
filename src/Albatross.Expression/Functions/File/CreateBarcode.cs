@@ -54,7 +54,7 @@ namespace Albatross.Expression.Functions.File
 
 
             var input = value1?.ToString();
-            var type = Enum.TryParse<BarcodeType>(value2.ToString(), out var standard) ? standard : BarcodeType.Code128;
+            var type = Enum.TryParse<BarcodeType>(value2.ToString(), true, out var standard) ? standard : BarcodeType.Code128;
             int width = 0;
             int hight = 0;
 
