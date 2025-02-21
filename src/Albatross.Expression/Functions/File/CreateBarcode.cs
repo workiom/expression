@@ -54,12 +54,9 @@ namespace Albatross.Expression.Functions.File
 
 
             var input = value1?.ToString();
-            var type = BarcodeType.Code128;
+            var type = Enum.TryParse<BarcodeType>(value2.ToString(), out var standard) ? standard : BarcodeType.Code128;
             int width = 0;
             int hight = 0;
-
-            if (value2 != null && !Enum.TryParse(value2.ToString(), out type))
-                throw new UnexpectedTypeException(value2.GetType());
 
             if (value3 != null && !string.IsNullOrEmpty(value3.ToString()) && !int.TryParse(value3.ToString(), out width))
                 throw new UnexpectedTypeException(value3.GetType());
