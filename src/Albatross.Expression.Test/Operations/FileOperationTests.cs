@@ -22,6 +22,18 @@
 
             [TestCase("createBarcode(\"test-12345\")", false)]
             [TestCase("createBarcode(\"\",\"Code128\")", false)]
+            
+            [TestCase("createQRCode(\"test-12345\", \"M\", 1000)", true)]
+            [TestCase("createQRCode(\"https://example.com\", \"Q\", 300)", true)]
+            [TestCase("createQRCode(\"test-12345\", \"L\", 128)", true)] 
+            [TestCase("createQRCode(\"test-12345\", \"H\", 512)", true)]
+            [TestCase("createQRCode(\"test-12345\")", true)] 
+            [TestCase("createQRCode(\"test-12345\", \"INVALID\", 256)", false)] 
+            [TestCase("createQRCode(\"\", \"M\", 256)", false)]
+            [TestCase("createQRCode(\"  \", \"M\", 256)", false)] 
+            [TestCase("createQRCode(null, \"M\", 256)", false)] 
+            [TestCase("createQRCode(\"test-12345\", \"M\", -1)", false)] 
+
             public void OperationsTesting(string expression, bool succeed)
             {
                 try
