@@ -11,6 +11,9 @@ namespace Albatross.Expression.QRCodes
         {
             if (string.IsNullOrWhiteSpace(input))
                 return null;
+
+            if (size < 1)
+                size = 256;
             
             var errorCorrectionLevel = GetErrorCorrectionLevel(ecc);
             using (var generator = new SkiaSharp.QrCode.QRCodeGenerator())
@@ -41,19 +44,27 @@ namespace Albatross.Expression.QRCodes
 
         private ECCLevel GetErrorCorrectionLevel(string ecc)
         {
-            switch (ecc.ToUpper())
+            try
             {
-                case "L":
-                    return ECCLevel.L;
-                case "M":
-                    return ECCLevel.M;
-                case "Q":
-                    return ECCLevel.Q;
-                case "H":
-                    return ECCLevel.H;
-                default:
-                    throw new ArgumentException($"Invalid ECC level: {ecc}. Supported: 'L', 'M', 'Q', 'H'.", nameof(ecc));
+                switch (ecc.ToUpper())
+                {
+                    case "L":
+                        return ECCLevel.L;
+                    case "M":
+                        return ECCLevel.M;
+                    case "Q":
+                        return ECCLevel.Q;
+                    case "H":
+                        return ECCLevel.H;
+                    default:
+                        return ECCLevel.M;
+                }
             }
+            catch
+            {
+                return ECCLevel.M;
+            }
+            
         }
     }
 }
