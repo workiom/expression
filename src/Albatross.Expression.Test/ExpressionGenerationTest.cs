@@ -15,7 +15,7 @@ namespace Albatross.Expression.Test {
 		[TestCase("1+(2*3)", ExpectedResult = "1 + 2 * 3")]
 		[TestCase("(1+2)*3", ExpectedResult = "(1 + 2) * 3")]
 		[TestCase("(1+2)*3 + today()", ExpectedResult = "(1 + 2) * 3 + Today()")]
-		[TestCase("if(1>2, avg(1,2,3), max(2,3,4))", ExpectedResult = "If(1 > 2, avg(1, 2, 3), max(2, 3, 4))")]
+		[TestCase("if(1>2, Avg(1,2,3), Max(2,3,4))", ExpectedResult = "If(1 > 2, Avg(1, 2, 3), Max(2, 3, 4))")]
 		[TestCase("1--1", ExpectedResult = "1 - -1")]
 		[TestCase("1+2+3", ExpectedResult = "1 + 2 + 3")]
 		[TestCase("1+(2+3)", ExpectedResult = "1 + (2 + 3)")]
