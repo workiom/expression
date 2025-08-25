@@ -15,6 +15,10 @@ namespace Albatross.Expression.Test
     [Category("Operations")]
     public class TextOperationTests
     {
+        // Sha256
+        [TestCase("sha256('abc')", ExpectedResult = "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad")]
+        [TestCase("sha256('The quick brown fox jumps over the lazy dog')", ExpectedResult = "d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592")]
+        
         // Padding
         [TestCase("padleft(1, 3)", ExpectedResult = "  1")]
         [TestCase("padleft(1, 3, 0)", ExpectedResult = "001")]
