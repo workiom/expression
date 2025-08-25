@@ -26,11 +26,11 @@ namespace Albatross.Expression.Operations
 
         public override object EvalValue(Func<string, object> context)
         {
-            List<object> list = GetOperands(context);
-            if (list.Count == 0)
-                return null;
+            List<object> operands = GetOperands(context);
+            if (operands.Count < 1)
+                throw new ArgumentException("Input is required");
 
-            object value = list[0];
+            object value = operands[0];
 
             string text;
             if (value is string)
