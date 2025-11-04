@@ -28,7 +28,6 @@ namespace Albatross.Expression.Test
         [TestCase("padright(1, 3, 0)", ExpectedResult = "100")]
         [TestCase("padright(1111, 3, 0)", ExpectedResult = "1111")]
         
-        
         // Right & Left
         [TestCase("left(\"abc\", 2)", ExpectedResult = "ab")]
         [TestCase("left(\"abc\", 0)", ExpectedResult = "")]
@@ -78,18 +77,20 @@ namespace Albatross.Expression.Test
         [TestCase("concat(true,5, 8,\"-variable\")", ExpectedResult = "58-variable")]
       
         // Contains
-        [TestCase("contains(\"[Option one, Option two]\", \"[Option one]\")", ExpectedResult = true)]
-        [TestCase("contains(\"[Option one, Option two]\", \"[Option one, Option two]\")", ExpectedResult = true)]
-        [TestCase("contains(\"[Option one, Option two]\", \"[Option one, Option three]\")", ExpectedResult = false)]
-        [TestCase("contains(\"[Option one, Option two]\", \"Option three\")", ExpectedResult = false)]
-        [TestCase("contains(\"Option one\", \"Option one\")", ExpectedResult = true)]
-        [TestCase("contains(\"Option one\", \"Option two\")", ExpectedResult = false)]
+        [TestCase("Contains(\"Option one and two\", \"Option one\")", ExpectedResult = true)]
+        [TestCase("Contains(\"Option one and two\", \"two\")", ExpectedResult = true)]
+        [TestCase("Contains(\"Option one and two\", \"Option three\")", ExpectedResult = false)]
+        [TestCase("Contains(\"Option one\", \"option ONE\")", ExpectedResult = true)] // Case-insensitive
+        [TestCase("Contains(\"Hello world\", \"WORLD\")", ExpectedResult = true)]
+        [TestCase("Contains(\"Hello\", \"Hi\")", ExpectedResult = false)]
+        [TestCase("Contains(\"some text\", \"\")", ExpectedResult = false)] // empty substring
         
-        // Not Contains
-        [TestCase("NotContains(\"Option One\", \"Option two\")", ExpectedResult = true)] 
-        [TestCase("NotContains(\"Option One\", \"Option One\")", ExpectedResult = false)] 
-        [TestCase("NotContains(\"[Option One, Option two]\", \"Option One\")", ExpectedResult = false)] 
-        [TestCase("NotContains(\"[Option One, Option two]\", \"Option three\")", ExpectedResult = true)] 
+        // NotContains
+        [TestCase("NotContains(\"Option One\", \"Option two\")", ExpectedResult = true)]
+        [TestCase("NotContains(\"Option One\", \"Option One\")", ExpectedResult = false)]
+        [TestCase("NotContains(\"Option One and Two\", \"Three\")", ExpectedResult = true)]
+        [TestCase("NotContains(\"The quick brown fox\", \"lazy dog\")", ExpectedResult = true)]
+        [TestCase("NotContains(\"The quick brown fox\", \"QUICK\")", ExpectedResult = false)] // case-insensitive
         
         // In
         [TestCase("In(\"Option one\", \"[Option one, Option two]\")", ExpectedResult = true)]
@@ -106,6 +107,23 @@ namespace Albatross.Expression.Test
         [TestCase("NotIn(\"[Option one, Option two]\", \"[Option one, Option two, Option three]\")", ExpectedResult = false)]
         [TestCase("NotIn(\"Option two\", \"Option two\")", ExpectedResult = false)]
         [TestCase("NotIn(\"Option three\", \"Option two\")", ExpectedResult = true)]
+        
+        // IsBlank tests
+        [TestCase("IsBlank(\"\")", ExpectedResult = true)]                     // Empty string
+        [TestCase("IsBlank(\"   \")", ExpectedResult = true)]                  // Whitespace string
+        [TestCase("IsBlank(\"Some text\")", ExpectedResult = false)]          // Non-empty string
+        [TestCase("IsBlank(\"  text  \")", ExpectedResult = false)]           // Whitespace around text
+        [TestCase("IsBlank(123)", ExpectedResult = false)]                    // Non-string, non-null input
+        [TestCase("IsBlank(\"true\")", ExpectedResult = false)]                   // Boolean input
+
+        // IsNotBlank tests
+        [TestCase("IsNotBlank(\"\")", ExpectedResult = false)]                // Empty string
+        [TestCase("IsNotBlank(\"   \")", ExpectedResult = false)]             // Whitespace string
+        [TestCase("IsNotBlank(\"Some text\")", ExpectedResult = true)]       // Non-empty string
+        [TestCase("IsNotBlank(\"  text  \")", ExpectedResult = true)]        // Whitespace around text
+        [TestCase("IsNotBlank(123)", ExpectedResult = true)]                 // Non-string, non-null input
+        [TestCase("IsNotBlank(\"false\")", ExpectedResult = true)]               // Boolean input
+
         public object OperationsTesting(string expression)
         {
             return Factory.Instance.Create().Compile(expression).EvalValue(null);
