@@ -20,13 +20,35 @@ namespace Albatross.Expression.Test
         [TestCase("avg(null, 4, 5 )", ExpectedResult = 4.5)]
         [TestCase("avg(0, 4, 5 )", ExpectedResult = 3)]
         [TestCase("avg(@(0, 4, 5))", ExpectedResult = 3)]
-
+        
+        // Size
+        [TestCase("size(500000)", ExpectedResult = 0.5)]
+        [TestCase("size(10000000)", ExpectedResult = 10)]
+        [TestCase("size(50000000)", ExpectedResult = 50)]
+        [TestCase("size(100000000)", ExpectedResult = 100)]
+        [TestCase("size(500000000)", ExpectedResult = 500)]
+        [TestCase("size(1000000000)", ExpectedResult = 1000)]
+        [TestCase("size(5000000000)", ExpectedResult = 5000)]
+        [TestCase("size(10000000000)", ExpectedResult = 10000)]
+        
         // Random
         [TestCase("getRandom() > 0", ExpectedResult = true)]
         [TestCase("getRandom(10) > 0 and getRandom(10, 100) < 100", ExpectedResult = true)]
         [TestCase("getRandom(10, 100) > 10 and getRandom(10, 100) < 100", ExpectedResult = true)]
         [TestCase("getRandom(10, 100) < 10 or getRandom(10, 100) > 100", ExpectedResult = false)]
 
+        // IsBetween
+        [TestCase("IsBetween(5, 1, 10)", ExpectedResult = true)]
+        [TestCase("IsBetween(10, 1, 10)", ExpectedResult = true)]
+        [TestCase("IsBetween(1, 1, 10)", ExpectedResult = true)]
+        [TestCase("IsBetween(0, 1, 10)", ExpectedResult = false)]
+        [TestCase("IsBetween(11, 1, 10)", ExpectedResult = false)]
+        [TestCase("IsBetween(0, -10, 10)", ExpectedResult = true)]
+        [TestCase("IsBetween(-10, -10, 10)", ExpectedResult = true)]
+        [TestCase("IsBetween(10, -10, 10)", ExpectedResult = true)]
+        [TestCase("IsBetween(-11, -10, 10)", ExpectedResult = false)]
+        [TestCase("IsBetween(11, -10, 10)", ExpectedResult = false)]
+        
         // Round
         [TestCase("round(1.4)", ExpectedResult = 1)]
         [TestCase("round(1.431412, 2)", ExpectedResult = 1.43)]
