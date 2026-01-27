@@ -85,6 +85,22 @@ namespace Albatross.Expression.Test
         [TestCase("Contains(\"Hello\", \"Hi\")", ExpectedResult = false)]
         [TestCase("Contains(\"some text\", \"\")", ExpectedResult = false)] // empty substring
         
+        // Word Count markdown text
+        [TestCase("wordCount(\"**123**\")", ExpectedResult = 1)]
+        [TestCase("wordCount(\"_123_\")", ExpectedResult = 1)]
+        [TestCase("wordCount(\"**__123 123__**\")", ExpectedResult = 2)]
+        [TestCase("wordCount(\"### H3\\n\\nH2\\n--\\n\\nH1\\n==\")", ExpectedResult = 3)]
+        [TestCase("wordCount(\"**Bold **_Italic_ ~~StrikeThrough~~ **_~~BoldItalicStrikeThrough~~_****_ BoldItalic_** _~~ItalicStrikeThrough~~__ _**~~BoldStrikeThrough~~**\")", ExpectedResult = 7)]
+        [TestCase("wordCount(\"> Block Quote\\n\\n`Code`\\n\\n    Code Block\\n\\nEmoji \\n\\n[Link](https://stackedit.io/app#)\")", ExpectedResult = 7)]
+        [TestCase("wordCount(\"1. LevelOne\\n\\n2. LevelTwo\\n\\n\\n\\n* LevelOne\\n\\n* LevelTwo\")", ExpectedResult = 4)]
+        [TestCase("wordCount(\"1. **Bold**\\n\\n2. **_BoldItalic_**\\n\\n3. **_~~BoldItalicStrikeThrough~~_**\\n\\n4. [Link](http://asdasdasdad@dasfv/asdqw)\\n\\n5. Emoji 2 \ud83d\ude07 \ud83d\ude17\")", ExpectedResult = 6)]
+
+        // Not Contains
+        [TestCase("NotContains(\"Option One\", \"Option two\")", ExpectedResult = true)] 
+        [TestCase("NotContains(\"Option One\", \"Option One\")", ExpectedResult = false)] 
+        [TestCase("NotContains(\"[Option One, Option two]\", \"Option One\")", ExpectedResult = false)] 
+        [TestCase("NotContains(\"[Option One, Option two]\", \"Option three\")", ExpectedResult = true)]
+        [TestCase("wordCount(\"1. **Bold**\\n\\n2. **_BoldItalic_**\\n\\n3. **_~~BoldItalicStrikeThrough~~_**\\n\\n4. [Link](http://asdasdasdad@dasfv/asdqw)\\n\\n5. Emoji 2 \ud83d\ude07 \ud83d\ude17\")", ExpectedResult = 6)]
         // NotContains
         [TestCase("NotContains(\"Option One\", \"Option two\")", ExpectedResult = true)]
         [TestCase("NotContains(\"Option One\", \"Option One\")", ExpectedResult = false)]
@@ -124,6 +140,25 @@ namespace Albatross.Expression.Test
         [TestCase("IsNotBlank(123)", ExpectedResult = true)]                 // Non-string, non-null input
         [TestCase("IsNotBlank(\"false\")", ExpectedResult = true)]               // Boolean input
 
+        // Char Count   
+        [TestCase("charCount(\"123\")", ExpectedResult = 3)]
+        [TestCase("charCount(\"123 123\")", ExpectedResult = 6)]
+        [TestCase("charCount(\"Word\")", ExpectedResult = 4)]
+        [TestCase("charCount(\"C Sharp\")", ExpectedResult = 6)]
+        
+        // Char Count markdown text
+        [TestCase("charCount(\"**123**\")", ExpectedResult = 3)]
+        [TestCase("charCount(\"_123_\")", ExpectedResult = 3)]
+        [TestCase("charCount(\"**__123 123__**\")", ExpectedResult = 6)]
+        [TestCase("charCount(\"### H3\\n\\nH2\\n--\\n\\nH1\\n==\")", ExpectedResult = 6)]
+        [TestCase("charCount(\"**Bold **_Italic_ ~~StrikeThrough~~ **_~~BoldItalicStrikeThrough~~_****_ BoldItalic_** _~~ItalicStrikeThrough~~__ _**~~BoldStrikeThrough~~**\")", ExpectedResult = 96)]
+        [TestCase("charCount(\"> Block Quote\\n\\n`Code`\\n\\n    Code Block\\n\\nEmoji \\n\\n[Link](https://stackedit.io/app#)\")", ExpectedResult = 32)]
+        [TestCase("charCount(\"1. LevelOne\\n\\n2. LevelTwo\\n\\n\\n\\n* LevelOne\\n\\n* LevelTwo\")", ExpectedResult = 32)]
+        [TestCase("charCount(\"1. **Bold**\\n\\n2. **_BoldItalic_**\\n\\n3. **_~~BoldItalicStrikeThrough~~_**\\n\\n4. [Link](http://asdasdasdad@dasfv/asdqw)\\n\\n5. Emoji 2 \ud83d\ude07 \ud83d\ude17\")", ExpectedResult = 47)]
+        [TestCase("charCount(\"[IRFAN](https://testqa.workiom.club/app/apps/b226f5a6-7a1a-41be-ac89-546bd3084bf5/list/1f815325-d905-49e5-8976-c26dafff4f89/394417) IRFAN\")", ExpectedResult = 10)]
+        [TestCase("charCount(\"IRFAN 💫\")", ExpectedResult = 5)]
+        [TestCase("charCount(\"IRFAN\\n=====\")", ExpectedResult = 5)]
+        [TestCase("charCount(\"> IRFAN\")", ExpectedResult = 5)]
         public object OperationsTesting(string expression)
         {
             return Factory.Instance.Create().Compile(expression).EvalValue(null);
