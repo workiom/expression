@@ -157,6 +157,7 @@ namespace Albatross.Expression
 
             var html = ConvertMarkdownToHtml(text);
             var plainText = ConvertHtmlToPlainText(html);
+            plainText = System.Net.WebUtility.HtmlDecode(plainText);
             plainText = StripMarkdown(plainText);
             normalizedText = plainText.Trim();
 

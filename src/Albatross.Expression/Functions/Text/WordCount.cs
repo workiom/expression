@@ -20,64 +20,76 @@ namespace Albatross.Expression.Operations
     [ParserOperation]
     public class WordCount : PrefixOperationToken
     {
+        public override string Name { get { return "WordCount"; } }
+        public override int MinOperandCount { get { return 1; } }
+        public override int MaxOperandCount { get { return 1; } }
+        public override bool Symbolic { get { return false; } }
 
-        public override string Name => "WordCount";
-        public override int MinOperandCount => 1;
-        public override int MaxOperandCount => 1;
-        public override bool Symbolic => false;
-        
-        static readonly Regex WordPattern = new Regex(@"\b[\w']+\b", RegexOptions.Compiled);
+        private static readonly Regex EmailRegex = new Regex(@"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$", RegexOptions.Compiled);
+        private static readonly Regex UrlRegex = new Regex(@"^(https?://|www\.)\S+$", RegexOptions.Compiled);
+        private static readonly Regex CleanTokenRegex = new Regex(@"[^\p{L}\p{N}']+", RegexOptions.Compiled);
 
         public override object EvalValue(Func<string, object> context)
         {
             List<object> list = GetOperands(context);
-
             object value = list[0];
-            switch (value)
-            {
-                case null:
-                    return null;
-                case string s:
-                    return CountWords(s);
-                case ICollection collection:
-                    return Convert.ToDouble(collection.Count);
-                default:
-                    throw new UnexpectedTypeException(value.GetType());
-            }
+
+            if (value == null)
+                return null;
+
+            var s = value as string;
+            if (s != null)
+                return CountWords(s);
+
+            var collection = value as ICollection;
+            if (collection != null)
+                return Convert.ToDouble(collection.Count);
+
+            throw new UnexpectedTypeException(value.GetType());
         }
-        
+
         private static double CountWords(string text)
         {
-            if (string.IsNullOrEmpty(text))
-                return 0;
-            
-            text = text.Trim();
-
-            var result = text.TryNormalizeText(out string normalizedText);
-            if (result)
-                text = normalizedText;
-        
-            // Collapse all whitespace to single spaces
-            text = Regex.Replace(text, @"\s+", " ");
-            text = text.Trim();
-        
-            if (string.IsNullOrEmpty(text))
+            if (string.IsNullOrWhiteSpace(text))
                 return 0;
 
-            MatchCollection matches = WordPattern.Matches(text);
-        
-            // Filter out matches that are only apostrophes or punctuation
+            text = text.Trim();
+
+            if (text.TryNormalizeText(out var normalized))
+                text = normalized;
+
+            text = Regex.Replace(text, @"\s+", " ").Trim();
+            if (string.IsNullOrWhiteSpace(text))
+                return 0;
+
+            var tokens = text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
             int count = 0;
-            foreach (Match match in matches)
+
+            foreach (var token in tokens)
             {
-                string word = match.Value;
-                // Only count if the word contains at least one alphanumeric character
-                if (word.Any(char.IsLetterOrDigit))
+                string t = token.Trim();
+                if (t.Length == 0)
+                    continue;
+
+                if (EmailRegex.IsMatch(t))
                 {
                     count++;
+                    continue;
                 }
+
+                if (UrlRegex.IsMatch(t))
+                {
+                    count++;
+                    continue;
+                }
+
+                string cleaned = CleanTokenRegex.Replace(t, "");
+
+                if (cleaned.Any(char.IsLetterOrDigit))
+                    count++;
             }
-        
+
             return count;
         }
     }
