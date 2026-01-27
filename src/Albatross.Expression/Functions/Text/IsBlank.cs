@@ -1,10 +1,11 @@
 ﻿using Albatross.Expression.Documentation;
 using Albatross.Expression.Documentation.Attributes;
+using Albatross.Expression.Helpers;
 using Albatross.Expression.Tokens;
 using System;
 using System.Linq;
 
-namespace Albatross.Expression.Operations
+namespace Albatross.Expression.Functions.Text
 {
     /// <summary>
     /// <para>Prefix operation to check if the input IsBlank</para>
@@ -29,20 +30,8 @@ namespace Albatross.Expression.Operations
 
         public override object EvalValue(Func<string, object> context)
         {
-            object value = GetOperands(context).First();
-
-            if (value == null)
-            {
-                return true;
-            }
-            else if (value is string)
-            {
-                return string.IsNullOrWhiteSpace((string)value);
-            }
-            else
-            {
-                return false;
-            }
+            var value = GetOperands(context).First();
+            return BlankHelper.IsBlank(value);
         }
     }
 }

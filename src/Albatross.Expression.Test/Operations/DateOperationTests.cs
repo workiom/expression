@@ -42,6 +42,14 @@ namespace Albatross.Expression.Test.Operations
         [TestCase("NotBetween(Date(\"2023-01-05\"), Date(\"2023-01-10\"), Date(\"2023-01-01\"))", ExpectedResult = false)]
         [TestCase("NotBetween(Date(\"2023-01-01\"), Date(\"2023-01-01\"), Date(\"2023-01-01\"))", ExpectedResult = false)]
         
+        // IsBetween with DateTime strings
+        [TestCase("IsBetween('2025-09-22', '2025-09-20', '2025-09-25')", ExpectedResult = true)] 
+        [TestCase("IsBetween('2025-09-20', '2025-09-20', '2025-09-25')", ExpectedResult = true)] 
+        [TestCase("IsBetween('2025-09-25', '2025-09-20', '2025-09-25')", ExpectedResult = true)]  
+        [TestCase("IsBetween('2025-09-19', '2025-09-20', '2025-09-25')", ExpectedResult = false)]  
+        [TestCase("IsBetween('2025-09-22', '2025-09-25', '2025-09-20')", ExpectedResult = false)] 
+        [TestCase("IsBetween('2025-09-19', '2025-09-25', '2025-09-20')", ExpectedResult = false)]
+        
         // Subtract
         [TestCase("SubtractDate(CreateDate(2020, 1, 4), CreateDate(2020, 1, 1))", ExpectedResult = 3)]
         [TestCase("SubtractTime(CreateDate(2020, 1, 1, 11, 15, 0), CreateDate(2020, 1, 1, 10, 14, 0))", ExpectedResult = 61)]
