@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 
 namespace Albatross.Expression.Test.Operations
 {
@@ -52,6 +53,21 @@ namespace Albatross.Expression.Test.Operations
         [TestCase("format(Date(\"2015-2-10\"), \"yyyy-MM-dd\")", ExpectedResult = "2015-02-10")]
         [TestCase("GetWorkingDays(Date(\"2023-08-29\"), Date(\"2023-09-03\"),1,1)", ExpectedResult = 4d)]
 
+        // Add Business Days
+        [TestCase("AddBusinessDays(CreateDate(2025, 4, 4), 5)", ExpectedResult = "2025-04-10")] 
+        [TestCase("AddBusinessDays(CreateDate(2025, 4, 5), 2)", ExpectedResult = "2025-04-08")] 
+        [TestCase("AddBusinessDays(CreateDate(2025, 4, 12), 1)", ExpectedResult = "2025-04-14")]
+        [TestCase("AddBusinessDays(CreateDate(2025, 4, 11), 3)", ExpectedResult = "2025-04-15")] 
+        [TestCase("AddBusinessDays(CreateDate(2025, 4, 10), -1)", ExpectedResult = "2025-04-10")] 
+        [TestCase("AddBusinessDays(CreateDate(2025, 4, 11), -5)", ExpectedResult = "2025-04-07")] 
+        [TestCase("AddBusinessDays(CreateDate(2025, 4, 14), -1)", ExpectedResult = "2025-04-14")]
+        [TestCase("AddBusinessDays(CreateDate(2025, 4, 12), 10)", ExpectedResult = "2025-04-25")]
+        [TestCase("AddBusinessDays(CreateDate(2025, 4, 8), 3, 1, 1)", ExpectedResult = "2025-04-10")] 
+        [TestCase("AddBusinessDays(CreateDate(2025, 4, 10), 3, 1, 1)", ExpectedResult = "2025-04-13")] 
+        [TestCase("AddBusinessDays(CreateDate(2025, 4, 12), 1, 1, 1)", ExpectedResult = "2025-04-13")] 
+        [TestCase("AddBusinessDays(CreateDate(2025, 4, 11), 3, 5, 2)", ExpectedResult = "2025-04-13")] 
+        [TestCase("AddBusinessDays(CreateDate(2025, 4, 10), 8, 5, 3)", ExpectedResult = "2025-04-20")] 
+        
         public object OperationsTesting(string expression)
         {
             return Factory.Instance.Create().Compile(expression).EvalValue(null);
