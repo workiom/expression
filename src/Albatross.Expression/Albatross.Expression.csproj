@@ -10,11 +10,6 @@
 		<Product>Workiom.Expression</Product>
 		<Description>Fix CreateQrCode Func Doc</Description>
 	</PropertyGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-	  <PackageReference Include="System.Security.Principal.Windows">
-	    <Version>4.4.1</Version>
-	  </PackageReference>
-	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="NetBarcode" Version="1.8.1"/>
 		<PackageReference Include="ByteSize" Version="2.1.2"/>
