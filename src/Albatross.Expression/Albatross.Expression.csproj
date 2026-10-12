@@ -1,20 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-		<AssemblyVersion>2.3.35.0</AssemblyVersion>
-		<FileVersion>2.3.35.0</FileVersion>
+		<AssemblyVersion>2.3.51.0</AssemblyVersion>
+		<FileVersion>2.3.51.0</FileVersion>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<Version>2.3.35.0</Version>
+		<Version>2.3.51.0</Version>
 		<Authors>Workiom.Expression</Authors>
 		<PackageId>Workiom.Expression</PackageId>
 		<Product>Workiom.Expression</Product>
-		<Description>Add char and word count functions #2</Description>
+		<Description>Fix CreateQrCode Func Doc</Description>
 	</PropertyGroup>
-	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-	  <PackageReference Include="System.Security.Principal.Windows">
-	    <Version>4.4.1</Version>
-	  </PackageReference>
-	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="NetBarcode" Version="1.8.1"/>
 		<PackageReference Include="ByteSize" Version="2.1.2"/>

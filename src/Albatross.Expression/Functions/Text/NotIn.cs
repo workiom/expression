@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Linq;
+using System.Collections;
 using Albatross.Expression.Documentation.Attributes;
 using Albatross.Expression.Tokens;
 
 namespace Albatross.Expression.Functions.Text
 {
     [FunctionDoc(Documentation.Group.Text, "{token}( , )",
-        "### Check if operand1 is not contained within operand2\n"+
+        "### Check if operand1 is not contained within operand2 or vice versa\n"+
         "#### Inputs:\n"+
-        "- operand1: a array of values or a single value to be checked\n"+
-        "- operand2: a array of values or a single value\n"+
+        "- operand1: an array of values or a single value to be checked\n"+
+        "- operand2: an array of values or a single value\n"+
         "#### Outputs:\n"+
-        "- false if operand1 is included in operand2, true otherwise."
+        "- false if any value in operand1 is included in operand2, or any value in operand2 is included in operand1; true otherwise."
     )]
     [ParserOperation]
     public class NotIn : PrefixOperationToken
@@ -24,13 +25,25 @@ namespace Albatross.Expression.Functions.Text
         public override object EvalValue(Func<string, object> context)
         {
             var operands = GetOperands(context);
-            var operand1 = operands[0].ToString().Trim('[', ']');
-            var operand2 = operands[1].ToString().Trim('[', ']');
+            var operand1List = NormalizeToStringList(operands[0]);
+            var operand2List = NormalizeToStringList(operands[1]);
 
-            var operand1List = operand1.Split(',').Select(s => s.Trim()).ToArray();
-            var operand2List = operand2.Split(',').Select(s => s.Trim()).ToArray();
+            return !operand1List.Any(operand2List.Contains) && !operand2List.Any(operand1List.Contains);
+        }
 
-            return operand1List.All(item => !operand2List.Contains(item));
+        private static string[] NormalizeToStringList(object operand)
+        {
+            if (operand is string str)
+            {
+                return str.Trim('[', ']').Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                          .Select(s => s.Trim())
+                          .ToArray();
+            }
+
+            if (operand is IEnumerable enumerable)
+                return enumerable.Cast<object>().Select(o => o?.ToString()?.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToArray();
+
+            return new[] { operand?.ToString().Trim() };
         }
     }
 }

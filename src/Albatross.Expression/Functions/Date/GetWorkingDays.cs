@@ -30,7 +30,7 @@ namespace Albatross.Expression.Functions.Date
         public override object EvalValue(Func<string, object> context)
         {
             if (ExpressionMode.IsValidationMode)
-                return 0M;
+                return 0D;
 
             var start = (DateTime)Convert.ChangeType(Operands[0].EvalValue(context), typeof(DateTime));
             var end = (DateTime)Convert.ChangeType(Operands[1].EvalValue(context), typeof(DateTime));
