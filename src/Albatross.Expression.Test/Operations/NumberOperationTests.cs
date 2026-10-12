@@ -56,6 +56,10 @@ namespace Albatross.Expression.Test
 
         [TestCase("roundUp(50.99)", ExpectedResult = 51)]
         [TestCase("roundDown(50.99)", ExpectedResult = 50)]
+        [TestCase("round(5.55, 1) > 5", ExpectedResult = true)]
+        [TestCase("roundUp(5.2) > 5", ExpectedResult = true)]
+        [TestCase("roundDown(5.8) > 5", ExpectedResult = false)]
+        [TestCase("round(2.5) = round(2.5)", ExpectedResult = true)]
 
         [TestCase("Number(\"44\")", ExpectedResult = 44)]
         [TestCase("SubtractTime(Date(\"2022-10-10 10:20:10\"),Date(\"2022-10-10 10:10:13\"))", ExpectedResult = 10)]
