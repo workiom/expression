@@ -8,12 +8,13 @@ namespace Albatross.Expression.Functions.File
 {
     [FunctionDoc(Group.File, "{token}( , , )",
         @"### Returns a QR code in image format.
-     #### Inputs:
-     - input: String (mandatory). Accepts record fields or plain text.
-     - ecc: Error correction level (optional). Default is 'M'. Supported: 'L', 'M', 'Q', 'H'.
-    - size: Width and height of the image (optional, in pixels). Default is 256.
+#### Inputs:
+- input: String (mandatory). Accepts record fields or plain text.
+- ecc: Error correction level (optional). Default is 'M'. Supported: 'L', 'M', 'Q', 'H'.
+- size: Width and height of the image (optional, in pixels). Default is 256.
+
 #### Outputs:
-    - File: The generated QR code image."
+- File: The generated QR code image."
     )]
     [ParserOperation]
     public class CreateQRCode : PrefixOperationToken

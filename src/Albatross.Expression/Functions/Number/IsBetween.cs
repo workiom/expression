@@ -7,14 +7,27 @@ using System.Linq;
 namespace Albatross.Expression.Functions.Number
 {
     [FunctionDoc(Group.Number, "{token}( , , )",
-        @"### Check if a number is between two values
+        @"### Check if a number or date is between two values
+
 #### Inputs:
-- @val1: Minimum value of the range
-- @val2: Maximum value of the range
-- @number: Number to check if it is in the range
-#### Outputs:
-- True if the number is between the two values (inclusive), otherwise false."
+- @value: The number or date to check.
+- @min: The minimum bound (number or date).
+- @max: The maximum bound (number or date).
+
+#### Behavior:
+- Compares `value` against the `min` and `max` bounds.
+- Returns `true` if `value` is between the bounds (inclusive).
+- Automatically swaps bounds if `min > max`.
+- Supports **either all numbers** or **all date values**.
+- Throws an error if types are mixed or unrecognized.
+
+#### Examples:
+- `IsBetween(5, 1, 10)` → `true`
+- `IsBetween(5, 10, 1)` → `true` (bounds swapped)
+- `IsBetween('2025-09-22', '2025-09-20', '2025-09-25')` → `true`
+- `IsBetween('2025-09-26', '2025-09-25', '2025-09-20')` → `false` (bounds swapped)"
     )]
+
     [ParserOperation]
     public class IsBetween : PrefixOperationToken
     {
@@ -25,16 +38,30 @@ namespace Albatross.Expression.Functions.Number
 
         public override object EvalValue(Func<string, object> context)
         {
-            var input = Operands.Select(item => (int)Convert.ChangeType(item.EvalValue(context), typeof(int))).ToArray();
-            if (input.Length != 3)
-            {
+            var operands = Operands.Select(o => o.EvalValue(context)).ToArray();
+
+            if (operands.Length != 3)
                 throw new ArgumentException("IsBetween function requires exactly three operands.");
+
+            if (operands.All(o => DateTime.TryParse(o.ToString(), out _)))
+            {
+                var dates = operands.Select(o => DateTime.Parse(o.ToString())).ToArray();
+                var value = dates[0].Date;
+                var min = dates[1].Date < dates[2].Date ? dates[1].Date : dates[2].Date;
+                var max = dates[1].Date > dates[2].Date ? dates[1].Date : dates[2].Date;
+                return value >= min && value <= max;
             }
 
-            var numberToCheck = input[0];
-            var minValue = input[1];
-            var maxValue = input[2];
+            if (operands.All(o => o is double))
+            {
+                var numbers = operands.Cast<double>().ToArray();
+                var value = numbers[0];
+                var min = Math.Min(numbers[1], numbers[2]);
+                var max = Math.Max(numbers[1], numbers[2]);
+                return value >= min && value <= max;
+            }
 
-            return numberToCheck  >= minValue && numberToCheck <= maxValue;        }
+            throw new ArgumentException("Operands must be either all doubles or all parsable dates.");
+        }
     }
 }

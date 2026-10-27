@@ -31,7 +31,7 @@ namespace Albatross.Expression.Operations
             object a = Operand1.EvalValue(context);
             object b = Operand2.EvalValue(context);
 
-            if (a == null || b == null) { return null; }
+            if (a == null || b == null) { return a as string ?? b as string; }
 
             else if (double.TryParse(a.ToString(), out double aNumber) && double.TryParse(b.ToString(), out double bNumber))
             {

@@ -14,6 +14,10 @@ namespace Albatross.Expression.Operations {
 			if (a == null || b == null) {
 				return false;
 			}
+			if (IsNumber(a) && IsNumber(b)) {
+				a = Convert.ToDouble(a);
+				b = Convert.ToDouble(b);
+			}
 			Type type = a.GetType();
 			if (type != b.GetType()) {
 				throw new Exceptions.UnexpectedTypeException(type, b.GetType());
@@ -32,6 +36,10 @@ namespace Albatross.Expression.Operations {
 			}
 			return interpret(result);
 		}
+		static bool IsNumber(object value) {
+			return value is double || value is decimal || value is int || value is long || value is float || value is short;
+		}
+
 		public abstract bool interpret(int comparisonResult);
 	}
 }
