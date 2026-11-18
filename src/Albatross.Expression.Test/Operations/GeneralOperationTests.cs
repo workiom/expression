@@ -81,6 +81,12 @@ namespace Albatross.Expression.Test
 
         [TestCase("1 + 2", ExpectedResult = 3)]
         [TestCase("1+null", ExpectedResult = null)]
+        [TestCase("null + 1", ExpectedResult = null)]
+        [TestCase("null + null", ExpectedResult = null)]
+        [TestCase("\"Date: \" + null", ExpectedResult = "Date: ")]
+        [TestCase("null + \" end\"", ExpectedResult = " end")]
+        [TestCase("\"a\" + null + \"b\"", ExpectedResult = "ab")]
+        [TestCase("\"N: \" + 0", ExpectedResult = "N: 0")]
 
         [TestCase("null%3", ExpectedResult = null)]
         [TestCase("2%3", ExpectedResult = 2)]
