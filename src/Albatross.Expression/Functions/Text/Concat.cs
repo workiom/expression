@@ -38,7 +38,7 @@ namespace Albatross.Expression.Operations
             try
             {
                 foreach (var item in items)
-                    stringBuilder.Append(item);
+                    stringBuilder.Append(DateTextFormat.ForText(item));
             }
             catch (InvalidCastException)
             {

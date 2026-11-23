@@ -25,7 +25,7 @@ namespace Albatross.Expression.Operations
         public override object EvalValue(Func<string, object> context)
         {
             object value = Operands.First().EvalValue(context);
-            return Convert.ToString(value);
+            return Convert.ToString(DateTextFormat.ForText(value));
         }
     }
 }

@@ -124,6 +124,22 @@ namespace Albatross.Expression
 
         #endregion
 
+        #region IToken
+
+        /// <summary>
+        /// Evaluates the token like <see cref="IToken.EvalValue"/>, with Plus (+), Concat and Text turning dates into
+        /// text by <paramref name="dateTextFormat"/>. The format applies to this calculation only.
+        /// </summary>
+        public static object EvalValue(this IToken token, Func<string, object> context, DateTextFormat dateTextFormat)
+        {
+            using (DateTextFormat.Use(dateTextFormat))
+            {
+                return token.EvalValue(context);
+            }
+        }
+
+        #endregion
+
         #region String
         
         private static readonly Regex MarkdownRegex = new Regex(@"^(#|##|###|####|#####|######|\*{1,3}|_{1,3}|\[.*?\]\(.*?\)|!\[.*?\]\(.*?\)|\d+\.\s|```[\s\S]+?```|\|.*\|.*\|)|(!\[[^\]]*\]\([^\)]*\)|\[[^\]]*\]\([^\)]*\)|\*\*.*\*\*|__.*__|\*.*\*|_.*_|`[^`]*`|\[.*\]\(.*\)|<.*>)", RegexOptions.Multiline | RegexOptions.Compiled);
