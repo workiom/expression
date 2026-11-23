@@ -43,7 +43,7 @@ namespace Albatross.Expression.Operations
             }
             else if (a is string || b is string)
             {
-                return string.Format("{0}{1}", a, b);
+                return string.Format("{0}{1}", DateTextFormat.ForText(a), DateTextFormat.ForText(b));
             }
             else
             {
