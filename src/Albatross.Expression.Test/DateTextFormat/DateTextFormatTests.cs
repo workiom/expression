@@ -12,11 +12,7 @@ namespace Albatross.Expression.Test
     [Category("DateTextFormat")]
     public class DateTextFormatTests
     {
-        static readonly DateTextFormat WorkspaceFormat = new DateTextFormat
-        {
-            DateFormat = "dd/MM/yyyy",
-            DateTimeFormat = "dd/MM/yyyy HH:mm",
-        };
+        static readonly DateTextFormat WorkspaceFormat = new DateTextFormat("dd/MM/yyyy", "dd/MM/yyyy HH:mm");
 
         static object Eval(string expression, DateTextFormat format)
         {
@@ -52,7 +48,7 @@ namespace Albatross.Expression.Test
         [Test]
         public void DateTimeFormatIsUsedForADateWhenNoDateFormatIsGiven()
         {
-            var format = new DateTextFormat { DateTimeFormat = "yyyy-MM-dd HH:mm" };
+            var format = new DateTextFormat(null, "yyyy-MM-dd HH:mm");
 
             Assert.AreEqual("2025-09-02 00:00", Eval("Text(date)", format));
         }
@@ -60,7 +56,7 @@ namespace Albatross.Expression.Test
         [Test]
         public void DateFormatIsUsedForADateTimeWhenNoDateTimeFormatIsGiven()
         {
-            var format = new DateTextFormat { DateFormat = "yyyy-MM-dd" };
+            var format = new DateTextFormat("yyyy-MM-dd", null);
 
             Assert.AreEqual("2025-09-05", Eval("Text(dateTime)", format));
         }
@@ -80,8 +76,16 @@ namespace Albatross.Expression.Test
             var before = token.EvalValue(name => values[name]);
 
             Assert.AreEqual(before, token.EvalValue(name => values[name], null));
-            Assert.AreEqual(before, Eval(expression, new DateTextFormat()));
+            Assert.AreEqual(before, Eval(expression, new DateTextFormat(null, null)));
             StringAssert.Contains(new DateTime(2025, 9, 2).ToString(CultureInfo.CurrentCulture), Convert.ToString(Eval("Text(date)", null)));
+        }
+
+        [Test]
+        public void TheFormatProviderNamesTheMonth()
+        {
+            var format = new DateTextFormat("d MMMM yyyy", null, new CultureInfo("fr-FR"));
+
+            Assert.AreEqual("Date: 2 septembre 2025", Eval("\"Date: \" + date", format));
         }
 
         [Test]
@@ -120,7 +124,7 @@ namespace Albatross.Expression.Test
             IToken outer = Factory.Instance.Create().Compile("Text(date) + \" | \" + inner");
             IToken inner = Factory.Instance.Create().Compile("Text(date)");
             var date = new DateTime(2025, 9, 2);
-            var iso = new DateTextFormat { DateFormat = "yyyy-MM-dd" };
+            var iso = new DateTextFormat("yyyy-MM-dd", null);
 
             var result = outer.EvalValue(name => name == "inner" ? inner.EvalValue(_ => date, iso) : (object)date, WorkspaceFormat);
 
